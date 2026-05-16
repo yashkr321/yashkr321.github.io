@@ -173,12 +173,15 @@
             font-weight: 500;
             min-width: 7rem;
             color: var(--text);
-            text-decoration: none;
-            text-decoration-color: var(--border);
-            text-underline-offset: 3px;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            text-decoration-color: var(--muted);
+            text-underline-offset: 4px;
+            transition: text-decoration-color 0.15s, color 0.15s;
         }
 
         .product-name:hover {
+            text-decoration-style: solid;
             text-decoration-color: var(--text);
         }
 
