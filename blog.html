@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog · Yash Kumar Gupta</title>
-    <meta name="description" content="Notes on building software, startups, and thinking, by Yash Kumar Gupta.">
+    <meta name="description" content="Writing on building software, startups, and lessons learned, by Yash Kumar Gupta.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -177,7 +177,7 @@
             border-bottom: none;
         }
 
-        .post-date {
+        .post-meta {
             display: block;
             font-family: 'IBM Plex Mono', monospace;
             font-size: 0.72rem;
@@ -188,10 +188,10 @@
 
         .post h2 {
             font-family: 'IBM Plex Sans', sans-serif;
-            font-size: 1.05rem;
+            font-size: 1.15rem;
             font-weight: 500;
             line-height: 1.4;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.5rem;
         }
 
         .post h2 a {
@@ -207,7 +207,24 @@
             color: var(--muted);
             font-size: 0.9rem;
             line-height: 1.6;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .tag {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.03em;
+            color: var(--muted);
+            background: var(--tag-bg);
+            padding: 0.1rem 0.55rem;
+            border-radius: 3px;
         }
 
         .read-more {
@@ -279,7 +296,7 @@
     </header>
 
     <p>
-        notes on building software, small startups, and how intelligence works. written mostly to figure out what i think.
+        notes on building software, small startups, and the lessons that come from actually doing it.
     </p>
 
     <hr class="divider">
@@ -290,31 +307,15 @@
         <div class="post-list">
 
             <article class="post">
-                <time class="post-date" datetime="2026-09-12">2026-09-12</time>
-                <h2><a href="blog-post-1.html">speed compounds, in practice</a></h2>
-                <p>what shipping every week changed about how i make decisions, and where moving fast actually backfires.</p>
+                <time class="post-meta" datetime="2026-09-20">2026-09-20 &middot; 5 min read</time>
+                <h2><a href="blog-post-1.html">Building Anethix Labs From the Ground Up: What I Learned as a Co-Founder</a></h2>
+                <p>I started working on Anethix Labs before it was even incorporated. This is what building a product from an idea taught me about startups, communication, and leadership.</p>
+                <div class="tags">
+                    <span class="tag">startups</span>
+                    <span class="tag">leadership</span>
+                    <span class="tag">anethix labs</span>
+                </div>
                 <a class="read-more" href="blog-post-1.html">read more</a>
-            </article>
-
-            <article class="post">
-                <time class="post-date" datetime="2026-08-28">2026-08-28</time>
-                <h2><a href="#">why codebases are hard to read</a></h2>
-                <p>search finds text. understanding needs structure. a short note on what a semantic layer over code should actually do.</p>
-                <a class="read-more" href="#">read more</a>
-            </article>
-
-            <article class="post">
-                <time class="post-date" datetime="2026-08-09">2026-08-09</time>
-                <h2><a href="#">building for markets that are hard to index</a></h2>
-                <p>tier-2 and tier-3 cities don't look like venture bets from the outside. that's most of the reason to look closer.</p>
-                <a class="read-more" href="#">read more</a>
-            </article>
-
-            <article class="post">
-                <time class="post-date" datetime="2026-07-21">2026-07-21</time>
-                <h2><a href="#">leaving a company you helped start</a></h2>
-                <p>what i took with me, what i'd do differently, and why working with smarter people is worth the humbling.</p>
-                <a class="read-more" href="#">read more</a>
             </article>
 
         </div>
