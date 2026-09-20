@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>speed compounds, in practice · Yash Kumar Gupta</title>
+    <meta name="description" content="What shipping every week changed about how I make decisions, and where moving fast backfires.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+
+    <script>
+        (function () {
+            var t = 'light';
+            try { t = localStorage.getItem('theme') || 'light'; } catch (e) {}
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
+
+    <style>
+        :root {
+            --bg: #f5f4f0;
+            --text: #1a1a1a;
+            --muted: #888;
+            --link: #1a1a1a;
+            --link-hover: #555;
+            --border: #ddd;
+            --tag-bg: #e8e7e3;
+        }
+
+        [data-theme="dark"] {
+            --bg: #111110;
+            --text: #e8e7e3;
+            --muted: #666;
+            --link: #e8e7e3;
+            --link-hover: #aaa;
+            --border: #2a2a28;
+            --tag-bg: #1e1e1c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-weight: 300;
+            background-color: var(--bg);
+            color: var(--text);
+            max-width: 38rem;
+            margin: 0 auto;
+            padding: 4rem 1.5rem 6rem;
+            transition: background-color 0.2s, color 0.2s;
+            font-size: 0.95rem;
+            line-height: 1.75;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 1.25rem;
+            right: 1.25rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            letter-spacing: 0.05em;
+            transition: color 0.2s;
+            padding: 0.25rem;
+        }
+
+        .theme-toggle:hover {
+            color: var(--text);
+        }
+
+        header {
+            margin-bottom: 3rem;
+        }
+
+        h1.site-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.75rem;
+        }
+
+        h1.site-name a {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.1rem 0;
+        }
+
+        .links a {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-decoration: none;
+            letter-spacing: 0.03em;
+            transition: color 0.15s;
+        }
+
+        .links a:hover,
+        .links a.active {
+            color: var(--text);
+        }
+
+        .links .sep {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--border);
+            margin: 0 0.5rem;
+            user-select: none;
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+            color: var(--text);
+        }
+
+        a {
+            color: var(--link);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-color: var(--border);
+            transition: text-decoration-color 0.15s;
+        }
+
+        a:hover {
+            text-decoration-color: var(--text);
+        }
+
+        a:focus-visible,
+        button:focus-visible {
+            outline: 1px solid var(--text);
+            outline-offset: 3px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2.5rem 0;
+        }
+
+        .back {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.03em;
+            color: var(--muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            transition: color 0.15s;
+        }
+
+        .back:hover {
+            color: var(--text);
+        }
+
+        .article-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .article-header h2 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.75rem;
+        }
+
+        .post-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--muted);
+            letter-spacing: 0.03em;
+            margin-bottom: 0.75rem;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .tag {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.03em;
+            color: var(--muted);
+            background: var(--tag-bg);
+            padding: 0.1rem 0.55rem;
+            border-radius: 3px;
+        }
+
+        .prose {
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .prose h3 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 500;
+            line-height: 1.4;
+            margin: 2.25rem 0 0.6rem;
+        }
+
+        .prose p {
+            margin-bottom: 1.35rem;
+        }
+
+        .prose ul,
+        .prose ol {
+            margin: 0 0 1.35rem 1.25rem;
+        }
+
+        .prose li {
+            margin-bottom: 0.4rem;
+            padding-left: 0.25rem;
+        }
+
+        .prose li::marker {
+            color: var(--muted);
+        }
+
+        .prose blockquote {
+            margin: 1.75rem 0;
+            padding-left: 1.1rem;
+            border-left: 2px solid var(--border);
+            color: var(--muted);
+            font-style: italic;
+        }
+
+        .prose blockquote p {
+            margin-bottom: 0;
+            color: inherit;
+        }
+
+        .prose code {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.82em;
+            background: var(--tag-bg);
+            padding: 0.1rem 0.35rem;
+            border-radius: 3px;
+        }
+
+        .prose pre {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            line-height: 1.65;
+            background: var(--tag-bg);
+            padding: 1rem 1.1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 1.75rem 0;
+        }
+
+        .prose pre code {
+            background: none;
+            padding: 0;
+            font-size: inherit;
+        }
+
+        .article-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+        }
+
+        .article-footer .back {
+            margin-bottom: 0;
+        }
+
+        footer {
+            margin-top: 3rem;
+        }
+
+        footer p {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        footer a {
+            color: var(--muted);
+            text-decoration-color: var(--border);
+        }
+
+        footer a:hover {
+            color: var(--text);
+            text-decoration-color: var(--text);
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 3rem 1.25rem 5rem;
+            }
+
+            .article-header h2 {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">[ theme ]</button>
+
+    <header>
+        <h1 class="site-name"><a href="index.html">Yash Kumar Gupta</a></h1>
+        <nav class="links" aria-label="Main">
+            <a href="index.html">home</a>
+            <span class="sep">/</span>
+            <a href="blog.html" class="active" aria-current="page">blog</a>
+            <span class="sep">/</span>
+            <a href="https://x.com">X</a>
+            <span class="sep">/</span>
+            <a href="https://github.com/yashkr321">github</a>
+            <span class="sep">/</span>
+            <a href="https://linkedin.com/ykgups">linkedin</a>
+            <span class="sep">/</span>
+            <a href="https://instagram.com/yashkr07">instagram</a>
+            <span class="sep">/</span>
+            <a href="mailto:hello@ykgup.tech">email</a>
+        </nav>
+    </header>
+
+    <main>
+        <a class="back" href="blog.html">&larr; back to blog</a>
+
+        <article>
+            <header class="article-header">
+                <h2>speed compounds, in practice</h2>
+                <div class="post-meta">
+                    <time datetime="2026-09-12">2026-09-12</time> &middot; 4 min read
+                </div>
+                <div class="tags">
+                    <span class="tag">startups</span>
+                    <span class="tag">shipping</span>
+                </div>
+            </header>
+
+            <div class="prose">
+                <p>
+                    This is placeholder text. Replace it with your own writing. The layout is built for long-form reading: a narrow column, generous line height, and the same type as the rest of the site.
+                </p>
+
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </p>
+
+                <h3>the first thing that changed</h3>
+
+                <p>
+                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+
+                <blockquote>
+                    <p>A bad decision at least teaches you something. Inaction teaches you nothing.</p>
+                </blockquote>
+
+                <h3>what i'd tell myself earlier</h3>
+
+                <p>
+                    Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris.
+                </p>
+
+                <ul>
+                    <li>Ship the smallest version that can be wrong.</li>
+                    <li>Recalibrate your pace every week, not every quarter.</li>
+                    <li>Write down the decision and the reason, so you can check it later.</li>
+                </ul>
+
+                <h3>a small code example</h3>
+
+                <p>
+                    Inline code looks like <code>git push origin main</code>, and longer snippets get their own block that scrolls sideways on small screens instead of breaking the layout:
+                </p>
+
+<pre><code>function ship(change) {
+  const result = deploy(change);
+  return learn(result); // the loop is the point
+}</code></pre>
+
+                <h3>closing thoughts</h3>
+
+                <p>
+                    Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Donec ullamcorper nulla non metus auctor fringilla. That's all for this sample; swap in your own content and keep going.
+                </p>
+            </div>
+        </article>
+
+        <hr class="divider">
+
+        <div class="article-footer">
+            <a class="back" href="blog.html">&larr; back to blog</a>
+            <a class="back" href="#top" onclick="window.scrollTo({top: 0}); return false;">back to top</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>this site is a wip. feel free to say hi — <a href="mailto:hello@ykgup.tech">hello@ykgup.tech</a></p>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            var current = document.documentElement.getAttribute('data-theme');
+            var next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            try { localStorage.setItem('theme', next); } catch (e) {}
+        }
+    </script>
+</body>
+</html>
