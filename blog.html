@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog · Yash Kumar Gupta</title>
+    <meta name="description" content="Notes on building software, startups, and thinking, by Yash Kumar Gupta.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <script>
+        (function () {
+            var t = 'light';
+            try { t = localStorage.getItem('theme') || 'light'; } catch (e) {}
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
+
+    <style>
+        :root {
+            --bg: #f5f4f0;
+            --text: #1a1a1a;
+            --muted: #888;
+            --link: #1a1a1a;
+            --link-hover: #555;
+            --border: #ddd;
+            --tag-bg: #e8e7e3;
+        }
+
+        [data-theme="dark"] {
+            --bg: #111110;
+            --text: #e8e7e3;
+            --muted: #666;
+            --link: #e8e7e3;
+            --link-hover: #aaa;
+            --border: #2a2a28;
+            --tag-bg: #1e1e1c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-weight: 300;
+            background-color: var(--bg);
+            color: var(--text);
+            max-width: 38rem;
+            margin: 0 auto;
+            padding: 4rem 1.5rem 6rem;
+            transition: background-color 0.2s, color 0.2s;
+            font-size: 0.95rem;
+            line-height: 1.75;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 1.25rem;
+            right: 1.25rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            letter-spacing: 0.05em;
+            transition: color 0.2s;
+            padding: 0.25rem;
+        }
+
+        .theme-toggle:hover {
+            color: var(--text);
+        }
+
+        header {
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.75rem;
+        }
+
+        h1 a {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.1rem 0;
+        }
+
+        .links a {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-decoration: none;
+            letter-spacing: 0.03em;
+            transition: color 0.15s;
+        }
+
+        .links a:hover,
+        .links a.active {
+            color: var(--text);
+        }
+
+        .links .sep {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--border);
+            margin: 0 0.5rem;
+            user-select: none;
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+            color: var(--text);
+        }
+
+        a {
+            color: var(--link);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-color: var(--border);
+            transition: text-decoration-color 0.15s;
+        }
+
+        a:hover {
+            text-decoration-color: var(--text);
+        }
+
+        a:focus-visible,
+        button:focus-visible {
+            outline: 1px solid var(--text);
+            outline-offset: 3px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2.5rem 0;
+        }
+
+        .section-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 1rem;
+        }
+
+        .post-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .post {
+            padding: 1.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .post:first-child {
+            padding-top: 0.5rem;
+        }
+
+        .post:last-child {
+            border-bottom: none;
+        }
+
+        .post-date {
+            display: block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--muted);
+            letter-spacing: 0.03em;
+            margin-bottom: 0.35rem;
+        }
+
+        .post h2 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 500;
+            line-height: 1.4;
+            margin-bottom: 0.4rem;
+        }
+
+        .post h2 a {
+            text-decoration: none;
+        }
+
+        .post h2 a:hover {
+            text-decoration: underline;
+            text-decoration-color: var(--text);
+        }
+
+        .post p {
+            color: var(--muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+
+        .read-more {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.03em;
+            text-decoration-style: dotted;
+            text-decoration-color: var(--muted);
+            text-underline-offset: 4px;
+        }
+
+        .read-more:hover {
+            text-decoration-style: solid;
+            text-decoration-color: var(--text);
+        }
+
+        footer {
+            margin-top: 3rem;
+        }
+
+        footer p {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        footer a {
+            color: var(--muted);
+            text-decoration-color: var(--border);
+        }
+
+        footer a:hover {
+            color: var(--text);
+            text-decoration-color: var(--text);
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 3rem 1.25rem 5rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">[ theme ]</button>
+
+    <header>
+        <h1><a href="index.html">Yash Kumar Gupta</a></h1>
+        <nav class="links" aria-label="Main">
+            <a href="index.html">home</a>
+            <span class="sep">/</span>
+            <a href="blog.html" class="active" aria-current="page">blog</a>
+            <span class="sep">/</span>
+            <a href="https://x.com">X</a>
+            <span class="sep">/</span>
+            <a href="https://github.com/yashkr321">github</a>
+            <span class="sep">/</span>
+            <a href="https://linkedin.com/ykgups">linkedin</a>
+            <span class="sep">/</span>
+            <a href="https://instagram.com/yashkr07">instagram</a>
+            <span class="sep">/</span>
+            <a href="mailto:hello@ykgup.tech">email</a>
+        </nav>
+    </header>
+
+    <p>
+        notes on building software, small startups, and how intelligence works. written mostly to figure out what i think.
+    </p>
+
+    <hr class="divider">
+
+    <main>
+        <div class="section-label">writing</div>
+
+        <div class="post-list">
+
+            <article class="post">
+                <time class="post-date" datetime="2026-09-12">2026-09-12</time>
+                <h2><a href="blog-post-1.html">speed compounds, in practice</a></h2>
+                <p>what shipping every week changed about how i make decisions, and where moving fast actually backfires.</p>
+                <a class="read-more" href="blog-post-1.html">read more</a>
+            </article>
+
+            <article class="post">
+                <time class="post-date" datetime="2026-08-28">2026-08-28</time>
+                <h2><a href="#">why codebases are hard to read</a></h2>
+                <p>search finds text. understanding needs structure. a short note on what a semantic layer over code should actually do.</p>
+                <a class="read-more" href="#">read more</a>
+            </article>
+
+            <article class="post">
+                <time class="post-date" datetime="2026-08-09">2026-08-09</time>
+                <h2><a href="#">building for markets that are hard to index</a></h2>
+                <p>tier-2 and tier-3 cities don't look like venture bets from the outside. that's most of the reason to look closer.</p>
+                <a class="read-more" href="#">read more</a>
+            </article>
+
+            <article class="post">
+                <time class="post-date" datetime="2026-07-21">2026-07-21</time>
+                <h2><a href="#">leaving a company you helped start</a></h2>
+                <p>what i took with me, what i'd do differently, and why working with smarter people is worth the humbling.</p>
+                <a class="read-more" href="#">read more</a>
+            </article>
+
+        </div>
+    </main>
+
+    <hr class="divider">
+
+    <footer>
+        <p>this site is a wip. feel free to say hi — <a href="mailto:hello@ykgup.tech">hello@ykgup.tech</a></p>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            var current = document.documentElement.getAttribute('data-theme');
+            var next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            try { localStorage.setItem('theme', next); } catch (e) {}
+        }
+    </script>
+</body>
+</html>
